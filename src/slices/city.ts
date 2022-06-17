@@ -5,61 +5,61 @@ import { geCoordinatesDataByCityName, getWeatherDataByCoordinates } from 'src/ut
 import { AppDispatch } from 'src/store';
 
 export type CityDetails = {
-  lat: number,
-  lon: number,
-  timezone: string,
-  timezone_offset: number,
+  lat: number;
+  lon: number;
+  timezone: string;
+  timezone_offset: number;
   current: {
-    dt: number,
-    sunrise: number,
-    sunset: number,
-    temp: number,
-    feels_like: number,
-    pressure: number,
-    humidity: number,
-    dew_point: number,
-    uvi: number,
-    clouds: number,
-    visibility: number,
-    wind_speed: number,
-    wind_deg: number,
+    dt: number;
+    sunrise: number;
+    sunset: number;
+    temp: number;
+    feels_like: number;
+    pressure: number;
+    humidity: number;
+    dew_point: number;
+    uvi: number;
+    clouds: number;
+    visibility: number;
+    wind_speed: number;
+    wind_deg: number;
     weather: [
       {
-        id: number,
-        main: string,
-        description: string,
-        icon: string,
-      },
-    ],
-  },
+        id: number;
+        main: string;
+        description: string;
+        icon: string;
+      }
+    ];
+  };
   hourly?: [
     {
-      dt: number,
-      temp: number,
-      feels_like: number,
-      pressure: number,
-      humidity: number,
-      dew_point: number,
-      uvi: number,
-      clouds: number,
-      visibility: number,
-      wind_speed: number,
-      wind_deg: number,
-      wind_gust: number,
+      dt: number;
+      temp: number;
+      feels_like: number;
+      pressure: number;
+      humidity: number;
+      dew_point: number;
+      uvi: number;
+      clouds: number;
+      visibility: number;
+      wind_speed: number;
+      wind_deg: number;
+      wind_gust: number;
       weather: [
         {
-          id: number,
-          main: string,
-          description: string,
-          icon: string,
-        },
-      ],
-      pop: number,
-    },
-  ],
+          id: number;
+          main: string;
+          description: string;
+          icon: string;
+        }
+      ];
+      pop: number;
+    }
+  ];
 };
 
-type FullCityDetails = CityDetails & { name: string, lat: number, lon: number, country: string };
+type FullCityDetails = CityDetails & { name: string; lat: number; lon: number; country: string };
 
 const initialState: FullCityDetails = {
   name: '',
@@ -132,8 +132,9 @@ const slice = createSlice({
 export const getData = (cityName: string) => async (dispatch: AppDispatch) => {
   const coordinates = await geCoordinatesDataByCityName(`/${cityName}`);
 
-  const data = await getWeatherDataByCoordinates(coordinates.data.lat, coordinates.data.lon)
-    .then((res) => res.data);
+  const data = await getWeatherDataByCoordinates(coordinates.data.lat, coordinates.data.lon).then(
+    (res) => res.data
+  );
 
   dispatch(slice.actions.getCityData({ ...data, ...coordinates.data }));
 };

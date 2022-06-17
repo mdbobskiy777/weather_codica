@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { NavBar } from 'src/components/navBar/NavBar';
 
 type PropType = {
-  children: ReactElement
+  children: ReactElement;
 };
 
 export const MainLayout = ({ children }: PropType) => (
@@ -12,9 +12,7 @@ export const MainLayout = ({ children }: PropType) => (
       <NavBar />
     </div>
     <div>
-      <main>
-        {children}
-      </main>
+      <main>{children}</main>
     </div>
   </div>
 );

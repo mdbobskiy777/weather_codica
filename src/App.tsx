@@ -4,8 +4,6 @@ import { allRoutes } from 'src/routes';
 
 export const App = () => (
   <Router>
-    <div>
-      {allRoutes}
-    </div>
+    <div>{allRoutes}</div>
   </Router>
 );

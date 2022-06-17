@@ -13,6 +13,8 @@
     "@types/react-dom": "^18.0.5",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^0.27.2",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
@@ -55,6 +57,7 @@
     "eslint-plugin-jest": "^26.5.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.30.0",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "2.7.1"
   }
 }

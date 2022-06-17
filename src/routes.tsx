@@ -5,10 +5,10 @@ import { MainLayout, MainLayoutType } from 'src/layouts/MainLayout';
 import { NotFoundView } from 'src/errors/NotFoundView';
 
 type RouteType = {
-  path: string,
-  layout?: MainLayoutType,
+  path: string;
+  layout?: MainLayoutType;
   // any type because of lazy(() => import())
-  element: any,
+  element: any;
 };
 
 type RoutesType = RouteType[];
@@ -24,11 +24,11 @@ const renderRoutes = (routes: RoutesType = []) => (
           <Route
             key={route.path}
             path={route.path}
-            element={(
+            element={
               <Layout>
                 <Component />
               </Layout>
-            )}
+            }
           />
         );
       })}

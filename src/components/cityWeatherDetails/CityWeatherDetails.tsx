@@ -1,3 +1,1 @@
-export const CityWeatherDetails = () => (
-  <div>CityWeatherDetails</div>
-);
+export const CityWeatherDetails = () => <div>CityWeatherDetails</div>;

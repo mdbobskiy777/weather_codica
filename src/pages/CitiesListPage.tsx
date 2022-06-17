@@ -1,7 +1,3 @@
-const CitiesListPage = () => (
-  <div>
-    CitiesListPage
-  </div>
-);
+const CitiesListPage = () => <div>CitiesListPage</div>;
 
 export default CitiesListPage;
