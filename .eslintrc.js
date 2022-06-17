@@ -31,6 +31,7 @@ module.exports = {
     'react/function-component-definition': 'off',
     'react/prop-types': 'off',
     'react/jsx-one-expression-per-line': 'off',
+    'linebreak-style': 0,
   },
   globals: {
     JSX: true,
