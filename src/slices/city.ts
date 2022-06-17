@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { geCoordinatesDataByCityName, getWeatherDataByCoordinates } from 'src/utils/axios';
+import { getCoordinatesDataByCityName, getWeatherDataByCoordinates } from 'src/utils/axios';
 
 import { AppDispatch } from 'src/store';
 
@@ -130,13 +130,11 @@ const slice = createSlice({
 });
 
 export const getData = (cityName: string) => async (dispatch: AppDispatch) => {
-  const coordinates = await geCoordinatesDataByCityName(`/${cityName}`);
+  const coordinates = await getCoordinatesDataByCityName(`${cityName}`);
 
-  const data = await getWeatherDataByCoordinates(coordinates.data.lat, coordinates.data.lon).then(
-    (res) => res.data
-  );
+  const data = await getWeatherDataByCoordinates(coordinates.data[0].lat, coordinates.data[0].lon);
 
-  dispatch(slice.actions.getCityData({ ...data, ...coordinates.data }));
+  dispatch(slice.actions.getCityData({ ...data, ...coordinates.data[0] }));
 };
 
 export const { reducer } = slice;
