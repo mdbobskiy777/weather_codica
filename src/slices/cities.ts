@@ -34,28 +34,51 @@ export type CityInfo = {
       }
     ];
   };
+  hourly?: [
+    {
+      dt: number;
+      temp: number;
+      feels_like: number;
+      pressure: number;
+      humidity: number;
+      dew_point: number;
+      uvi: number;
+      clouds: number;
+      visibility: number;
+      wind_speed: number;
+      wind_deg: number;
+      wind_gust: number;
+      weather: [
+        {
+          id: number;
+          main: string;
+          description: string;
+          icon: string;
+        }
+      ];
+      pop: 0;
+    }
+  ];
 };
 
 type CitiesListState = {
   cities: CityInfo[];
 };
 
-const initialState: CitiesListState & {
+type State = CitiesListState & {
   status: string;
-  error: string | null;
-} = {
-  status: 'initial',
-  error: null,
-  cities: [],
+  error: {
+    message: string;
+  };
 };
 
-/* const getCityDataAsync = createAsyncThunk(
-  'users/fetchByIdStatus',
-  async (cityName: string, thunkAPI) => {
-    const response = await getCoordinatesDataByCityName(cityName);
-    return response.data;
-  }
-); */
+const initialState: State = {
+  status: 'initial',
+  error: {
+    message: '',
+  },
+  cities: [],
+};
 
 export const getCityDataAsync = createAsyncThunk(
   'cities/getCityDataAsync',
@@ -70,8 +93,18 @@ const slice = createSlice({
   name: 'cities',
   initialState,
   reducers: {
-    getCityData(state, action: PayloadAction<CityInfo>) {
-      state.cities.push(action.payload);
+    addCity(state, action: PayloadAction<CityInfo>) {
+      state.cities = state.cities.find((city) => city.name === action.payload.name)
+        ? state.cities
+        : state.cities.concat(action.payload);
+    },
+    deleteCity(state, action: PayloadAction<string>) {
+      state.cities = state.cities.filter((city) => city.name !== action.payload);
+    },
+    updateCity(state, action: PayloadAction<CityInfo>) {
+      // eslint-disable-next-line no-return-assign
+      state.cities[state.cities.findIndex((city) => city.name === action.payload.name)] =
+        action.payload;
     },
     setStatus(state, action: PayloadAction<string>) {
       state.status = action.payload;
@@ -79,20 +112,19 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getCityDataAsync.pending, (state: typeof initialState) => {
+      .addCase(getCityDataAsync.pending, (state: State) => {
         state.status = 'loading';
       })
-      .addCase(getCityDataAsync.fulfilled, (state: typeof initialState, action: any) => {
+      .addCase(getCityDataAsync.fulfilled, (state: State, action: any) => {
         if (action.payload.length === 0) {
           state.status = 'error';
-          state.error = 'wrong city name';
+          state.error.message = 'wrong city name';
         } else {
-          state.error = '';
+          state.error.message = '';
           state.status = 'success';
-          state.cities.push(action.payload[0]);
         }
       })
-      .addCase(getCityDataAsync.rejected, (state: typeof initialState, action: any) => {
+      .addCase(getCityDataAsync.rejected, (state: State, action: any) => {
         state.status = 'error';
         state.error = action.error;
       });
@@ -100,16 +132,29 @@ const slice = createSlice({
 });
 
 export const getData = (cityName: string) => async (dispatch: AppDispatch) => {
-  const coordinates = await getCoordinatesDataByCityName(`/${cityName}`);
-  console.log('coordinates: ', coordinates);
-  const data = await getWeatherDataByCoordinates(
-    coordinates.data[0].lat,
-    coordinates.data[0].lon,
-    '&exclude=minutely,daily,alerts,hourly'
-  );
-  console.log('data: ', data);
-  dispatch(slice.actions.getCityData({ ...data, ...coordinates.data[0] }));
+  const coordinates = await dispatch(getCityDataAsync(cityName)).unwrap();
+
+  const data = await getWeatherDataByCoordinates(coordinates[0].lat, coordinates[0].lon);
+
+  dispatch(slice.actions.addCity({ ...data, ...coordinates[0] }));
 };
+
+export const deleteCity = (cityName: string) => (dispatch: AppDispatch) => {
+  dispatch(slice.actions.deleteCity(cityName));
+};
+
+export const updateCity =
+  (cityName: string, addParam?: string) => async (dispatch: AppDispatch) => {
+    const coordinates = await dispatch(getCityDataAsync(cityName)).unwrap();
+
+    const data = await getWeatherDataByCoordinates(
+      coordinates[0].lat,
+      coordinates[0].lon,
+      addParam
+    );
+
+    dispatch(slice.actions.updateCity({ ...data, ...coordinates[0] }));
+  };
 
 export const setStatus = (status: string) => (dispatch: AppDispatch) => {
   dispatch(slice.actions.setStatus(status));
