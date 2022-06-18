@@ -1,7 +1,7 @@
-import { CitiesList } from 'src/components/citiesList/CitiesList';
+import { CitiesListOverview } from 'src/components/citiesListOverview/CitiesListOverview';
 
 const CitiesListPage = () => {
-  return <CitiesList />;
+  return <CitiesListOverview />;
 };
 
 export default CitiesListPage;

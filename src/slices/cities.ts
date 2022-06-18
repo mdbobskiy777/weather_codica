@@ -62,14 +62,14 @@ export type CityInfo = {
 };
 
 type CitiesListState = {
-  cities: CityInfo[];
+  citiesInfo: CityInfo[];
 };
-
+export type Error = {
+  message: string;
+};
 type State = CitiesListState & {
   status: string;
-  error: {
-    message: string;
-  };
+  error: Error;
 };
 
 const initialState: State = {
@@ -77,7 +77,7 @@ const initialState: State = {
   error: {
     message: '',
   },
-  cities: [],
+  citiesInfo: [],
 };
 
 export const getCityDataAsync = createAsyncThunk(
@@ -94,16 +94,15 @@ const slice = createSlice({
   initialState,
   reducers: {
     addCity(state, action: PayloadAction<CityInfo>) {
-      state.cities = state.cities.find((city) => city.name === action.payload.name)
-        ? state.cities
-        : state.cities.concat(action.payload);
+      state.citiesInfo = state.citiesInfo.find((city) => city.name === action.payload.name)
+        ? state.citiesInfo
+        : state.citiesInfo.concat(action.payload);
     },
     deleteCity(state, action: PayloadAction<string>) {
-      state.cities = state.cities.filter((city) => city.name !== action.payload);
+      state.citiesInfo = state.citiesInfo.filter((city) => city.name !== action.payload);
     },
     updateCity(state, action: PayloadAction<CityInfo>) {
-      // eslint-disable-next-line no-return-assign
-      state.cities[state.cities.findIndex((city) => city.name === action.payload.name)] =
+      state.citiesInfo[state.citiesInfo.findIndex((city) => city.name === action.payload.name)] =
         action.payload;
     },
     setStatus(state, action: PayloadAction<string>) {
@@ -131,7 +130,7 @@ const slice = createSlice({
   },
 });
 
-export const getData = (cityName: string) => async (dispatch: AppDispatch) => {
+export const addCity = (cityName: string) => async (dispatch: AppDispatch) => {
   const coordinates = await dispatch(getCityDataAsync(cityName)).unwrap();
 
   const data = await getWeatherDataByCoordinates(coordinates[0].lat, coordinates[0].lon);

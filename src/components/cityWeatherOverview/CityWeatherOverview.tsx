@@ -15,7 +15,7 @@ export const CityWeatherDetails = () => {
   const dispatch = useDispatch();
 
   const currentCity = useSelector((state) =>
-    state.cities.cities.find((city) => city.name === cityName)
+    state.cities.citiesInfo.find((city) => city.name === cityName)
   );
 
   useEffect(() => {
@@ -49,13 +49,25 @@ export const CityWeatherDetails = () => {
             <div>{`weather description:: ${currentCity.current.weather[0].description}`}</div>
             <div>{`weather icon:: ${currentCity.current.weather[0].icon}`}</div>
             <div>
+              <img
+                src={`http://openweathermap.org/img/wn/${currentCity.current.weather[0].icon}@4x.png`}
+                alt="weather_icon"
+              />
+            </div>
+            <div>
               {currentCity.hourly && (
                 <List>
                   {currentCity.hourly.map((hour) => (
-                    <ListItem key={hour.dt}>
-                      <div>{`dt: ${hour.dt}`}</div>
+                    <ListItem key={hour.dt} sx={{ flexDirection: 'column' }}>
+                      <div>{`dt: ${new Date(hour.dt * 1000)} hours`}</div>
                       <div>{`temperature: ${hour.temp}`}</div>
                       <div>{`feels_like: ${hour.feels_like}`}</div>
+                      <div>
+                        <img
+                          src={`http://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
+                          alt="weather_icon"
+                        />
+                      </div>
                     </ListItem>
                   ))}
                 </List>

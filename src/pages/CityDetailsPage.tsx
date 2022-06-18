@@ -1,4 +1,4 @@
-import { CityWeatherDetails } from 'src/components/cityWeatherDetails/CityWeatherDetails';
+import { CityWeatherDetails } from 'src/components/cityWeatherOverview/CityWeatherOverview';
 
 const CityDetailsPage = () => (
   <div>
