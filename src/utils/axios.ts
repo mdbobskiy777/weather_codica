@@ -26,14 +26,14 @@ wheatherAPIInstance.interceptors.response.use(
 
 export const getCoordinatesDataByCityName = async (cityName: string) =>
   geocodingAPIInstance.get<GeogeocodingResponse>(
-    `/direct?q=${cityName}&appid=49e554f6956b3cc8ebe95b6374266b87`
+    `/direct?q=${cityName}&appid=bb55fa38420cf04db8d9a7af31c60b5c`
   );
 /* .then((res) => res.data[0]); */
 
 export const getWeatherDataByCoordinates = async (lat: number, lon: number, addParam = '') => {
   return wheatherAPIInstance
     .get<CityInfo>(
-      `/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,daily,alerts&appid=49e554f6956b3cc8ebe95b6374266b87`.replace(
+      `/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,daily,alerts&units=metric&appid=bb55fa38420cf04db8d9a7af31c60b5c`.replace(
         addParam,
         ''
       )

@@ -1,16 +1,33 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useParams } from 'react-router';
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import { useDispatch, useSelector } from 'src/store';
 import { NotFoundCity } from 'src/errors/NotFoundCity';
 import { updateCity } from 'src/slices/cities';
+import { WeatherImageBox } from 'src/common';
+import { showFormattedTemperature } from 'src/heplers';
+import { HourlyTemperatureList } from './HourlyTemperatureList';
+import {
+  cityTextStyle,
+  countryTextStyle,
+  dateTextStyle,
+  extraInfoBoxStyle,
+  extraInfoTextStyle,
+  imageBoxStyle,
+  mainBoxStyle,
+  mainWeatherTextStyle,
+  nameBoxStyle,
+  temperatureTextStyle,
+  weatherTextStyle,
+} from './styles';
 
 export const CityWeatherDetails = () => {
   const { cityName } = useParams();
+  const [loading, setISloading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -19,65 +36,72 @@ export const CityWeatherDetails = () => {
   );
 
   useEffect(() => {
-    if (currentCity) dispatch(updateCity(currentCity.name, 'hourly'));
+    if (currentCity) {
+      setISloading(true);
+      dispatch(updateCity(currentCity.name, 'hourly')).then(() => {
+        setISloading(false);
+      });
+    }
   }, []);
 
   return (
-    <div>
-      <div>CityWeatherDetails</div>
-      <div>
-        {currentCity ? (
-          <div>
-            <div>{`name: ${currentCity.name}`}</div>
-            <div>{`country: ${currentCity.country}`}</div>
-            <div>{`timezone: ${currentCity.timezone}`}</div>
-            <div>{`timezone_offset: ${currentCity.timezone_offset}`}</div>
-            <div>{`dt: ${currentCity.current.dt}`}</div>
-            <div>{`sunrise: ${currentCity.current.sunrise}`}</div>
-            <div>{`sunset: ${currentCity.current.sunset}`}</div>
-            <div>{`temperature: ${currentCity.current.temp}`}</div>
-            <div>{`feels_like: ${currentCity.current.feels_like}`}</div>
-            <div>{`pressure: ${currentCity.current.pressure}`}</div>
-            <div>{`humidity: ${currentCity.current.humidity}`}</div>
-            <div>{`dew_point: ${currentCity.current.dew_point}`}</div>
-            <div>{`uvi: ${currentCity.current.uvi}`}</div>
-            <div>{`clouds: ${currentCity.current.clouds}`}</div>
-            <div>{`visibility: ${currentCity.current.visibility}`}</div>
-            <div>{`wind_speed: ${currentCity.current.wind_speed}`}</div>
-            <div>{`wind_deg: ${currentCity.current.wind_deg}`}</div>
-            <div>{`weather main:: ${currentCity.current.weather[0].main}`}</div>
-            <div>{`weather description:: ${currentCity.current.weather[0].description}`}</div>
-            <div>{`weather icon:: ${currentCity.current.weather[0].icon}`}</div>
-            <div>
-              <img
-                src={`http://openweathermap.org/img/wn/${currentCity.current.weather[0].icon}@4x.png`}
-                alt="weather_icon"
-              />
-            </div>
-            <div>
-              {currentCity.hourly && (
-                <List>
-                  {currentCity.hourly.map((hour) => (
-                    <ListItem key={hour.dt} sx={{ flexDirection: 'column' }}>
-                      <div>{`dt: ${new Date(hour.dt * 1000)} hours`}</div>
-                      <div>{`temperature: ${hour.temp}`}</div>
-                      <div>{`feels_like: ${hour.feels_like}`}</div>
-                      <div>
-                        <img
-                          src={`http://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
-                          alt="weather_icon"
-                        />
-                      </div>
-                    </ListItem>
-                  ))}
-                </List>
-              )}
-            </div>
-          </div>
-        ) : (
-          <NotFoundCity />
-        )}
-      </div>
-    </div>
+    <Box>
+      {currentCity ? (
+        <Box>
+          <Box sx={mainBoxStyle}>
+            <Box>
+              <Box sx={nameBoxStyle}>
+                <Typography sx={cityTextStyle}>{currentCity.name}</Typography>
+                <Typography sx={countryTextStyle}>{currentCity.country}</Typography>
+                <Typography sx={dateTextStyle}>
+                  {new Date(currentCity.current.dt * 1000).toLocaleString()}
+                </Typography>
+              </Box>
+              <Box sx={extraInfoBoxStyle}>
+                <Typography sx={extraInfoTextStyle}>
+                  {`Feels like: ${showFormattedTemperature(currentCity.current.feels_like)}℃`}
+                </Typography>
+                <Typography
+                  sx={extraInfoTextStyle}
+                >{`Ultra Violet Radiation: ${currentCity.current.uvi}`}</Typography>
+                <Typography
+                  sx={extraInfoTextStyle}
+                >{`Clouds: ${currentCity.current.clouds}`}</Typography>
+                <Typography
+                  sx={extraInfoTextStyle}
+                >{`Visibility: ${currentCity.current.visibility}`}</Typography>
+                <Typography
+                  sx={extraInfoTextStyle}
+                >{`Wind Speed: ${currentCity.current.wind_speed}`}</Typography>
+                <Typography
+                  sx={extraInfoTextStyle}
+                >{`Wind Direction Degree : ${currentCity.current.wind_deg}°`}</Typography>
+              </Box>
+            </Box>
+            <Box sx={imageBoxStyle}>
+              <Typography sx={temperatureTextStyle}>
+                {showFormattedTemperature(currentCity.current.temp)}℃
+              </Typography>
+              <Box>
+                <WeatherImageBox icon={`${currentCity.current.weather[0].icon}@4x`} />
+              </Box>
+              <Typography sx={mainWeatherTextStyle}>
+                {currentCity.current.weather[0].main}
+              </Typography>
+              <Typography sx={weatherTextStyle}>
+                ({currentCity.current.weather[0].description})
+              </Typography>
+            </Box>
+          </Box>
+          <Box>
+            {currentCity.hourly && (
+              <HourlyTemperatureList currentCity={currentCity} loading={loading} />
+            )}
+          </Box>
+        </Box>
+      ) : (
+        <NotFoundCity />
+      )}
+    </Box>
   );
 };

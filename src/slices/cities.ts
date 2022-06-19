@@ -108,6 +108,9 @@ const slice = createSlice({
     setStatus(state, action: PayloadAction<string>) {
       state.status = action.payload;
     },
+    setError(state, action: PayloadAction<string>) {
+      state.error.message = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -157,6 +160,10 @@ export const updateCity =
 
 export const setStatus = (status: string) => (dispatch: AppDispatch) => {
   dispatch(slice.actions.setStatus(status));
+};
+
+export const setError = (error: string) => (dispatch: AppDispatch) => {
+  dispatch(slice.actions.setError(error));
 };
 
 export const { reducer } = slice;

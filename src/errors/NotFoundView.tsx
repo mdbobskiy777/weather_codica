@@ -1,1 +1,3 @@
-export const NotFoundView = () => <div>ERROR 404</div>;
+import Typography from '@mui/material/Typography';
+
+export const NotFoundView = () => <Typography>ERROR 404</Typography>;

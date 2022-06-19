@@ -1,20 +1,11 @@
 import { ReactElement } from 'react';
 
-import { NavBar } from 'src/components/navBar/NavBar';
+import Container from '@mui/material/Container';
 
-type PropType = {
+type PropsType = {
   children: ReactElement;
 };
 
-export const MainLayout = ({ children }: PropType) => (
-  <div>
-    <div>
-      <NavBar />
-    </div>
-    <div>
-      <main>{children}</main>
-    </div>
-  </div>
-);
+export const MainLayout = ({ children }: PropsType) => <Container>{children}</Container>;
 
 export type MainLayoutType = typeof MainLayout;

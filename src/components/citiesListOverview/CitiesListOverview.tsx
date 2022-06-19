@@ -2,43 +2,40 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router';
 
-import { useDispatch, useSelector } from 'src/store';
-import { deleteCity, addCity, setStatus, updateCity } from 'src/slices/cities';
+import Box from '@mui/material/Box';
 
+import { useDispatch, useSelector } from 'src/store';
+import { deleteCity, addCity, setStatus, updateCity, setError } from 'src/slices/cities';
 import { AddCityDialog } from './AddCityDialog';
-import { AddCityButton } from './AddCityButton';
 import { CitiesList } from './CitiesList';
+import { cityListBoxStyle } from './styles';
 
 export const CitiesListOverview = () => {
   const [cityName, setCityName] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const [refreshLoading, setRefreshtLoading] = useState(false);
+  const [refreshLoading, setRefreshLoading] = useState(false);
+  const [updatingCity, setUpdatingCity] = useState('');
 
   const { status, error, citiesInfo } = useSelector((state) => state.cities);
   const dispatch = useDispatch();
 
   const refreshData = useCallback(() => {
-    setRefreshtLoading(true);
+    setRefreshLoading(true);
     Promise.all(
-      citiesInfo.map(
-        (city) =>
-          new Promise(() => {
-            dispatch(updateCity(city.name));
-          })
+      citiesInfo.map((city) =>
+        dispatch(updateCity(city.name)).catch(() => {
+          setRefreshLoading(false);
+        })
       )
     ).then(() => {
-      // eslint-disable-next-line no-debugger
-      debugger;
-      console.log('Promise.all then is running');
-      setRefreshtLoading(false);
+      setRefreshLoading(false);
     });
   }, [citiesInfo, dispatch]);
 
   useEffect(() => {
     refreshData();
-    console.log('refreshData useEffect');
   }, []);
 
   const navigate = useNavigate();
@@ -57,7 +54,6 @@ export const CitiesListOverview = () => {
   const onAddCity = useCallback(() => {
     dispatch(addCity(cityName));
     setCityName('');
-    setStatus('');
   }, [cityName]);
 
   const onDeleteCity = useCallback(
@@ -69,27 +65,39 @@ export const CitiesListOverview = () => {
 
   const onUpdateCityInfo = useCallback(
     (updateCityName: string) => () => {
-      dispatch(updateCity(updateCityName));
+      setUpdatingCity(updateCityName);
+      dispatch(updateCity(updateCityName))
+        .then(() => {
+          setUpdatingCity('');
+        })
+        .catch(() => {
+          setUpdatingCity('');
+        });
     },
     []
   );
 
-  const toggleDialog = useCallback(() => setIsOpen((prev) => !prev), []);
+  const toggleDialog = useCallback(() => {
+    setIsOpen((prev) => !prev);
+    dispatch(setStatus(''));
+    dispatch(setError(''));
+  }, []);
 
   return (
-    <div>
-      <div>
-        {refreshLoading && <div>Updating weather info...</div>}
+    <Box>
+      <Box sx={cityListBoxStyle}>
         {citiesInfo && (
           <CitiesList
             citiesInfo={citiesInfo}
             onCardClick={onCardClick}
             onDeleteCity={onDeleteCity}
             onUpdateCityInfo={onUpdateCityInfo}
+            toggleDialog={toggleDialog}
+            refreshLoading={refreshLoading}
+            updatingCity={updatingCity}
           />
         )}
-      </div>
-      <AddCityButton toggleDialog={toggleDialog} />
+      </Box>
       <AddCityDialog
         isOpen={isOpen}
         toggleDialog={toggleDialog}
@@ -99,6 +107,6 @@ export const CitiesListOverview = () => {
         onAddCity={onAddCity}
         status={status}
       />
-    </div>
+    </Box>
   );
 };

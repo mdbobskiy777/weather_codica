@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { MainLayout, MainLayoutType } from 'src/layouts/MainLayout';
 import { NotFoundView } from 'src/errors/NotFoundView';
+import { Loading } from 'src/common';
 
 type RouteType = {
   path: string;
@@ -14,7 +15,7 @@ type RouteType = {
 type RoutesType = RouteType[];
 
 const renderRoutes = (routes: RoutesType = []) => (
-  <Suspense fallback={<div>loading...</div>}>
+  <Suspense fallback={<Loading />}>
     <Routes>
       {routes.map((route: RouteType) => {
         const Layout = route.layout || Fragment;

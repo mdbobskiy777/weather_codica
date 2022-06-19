@@ -1,13 +1,14 @@
-import { ReactElement } from 'react';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 
-import Button from '@mui/material/Button';
+import AddIcon from 'src/assets/images/icons/AddIcon';
 
-type AddCityButtonType = (props: { toggleDialog: () => void }) => ReactElement;
+type AddCityButtonType = { toggleDialog: () => void };
 
-export const AddCityButton: AddCityButtonType = ({ toggleDialog }) => (
-  <div>
-    <Button variant="outlined" onClick={toggleDialog}>
-      Add city
-    </Button>
-  </div>
+export const AddCityButton = ({ toggleDialog }: AddCityButtonType) => (
+  <Box>
+    <IconButton onClick={toggleDialog}>
+      <AddIcon />
+    </IconButton>
+  </Box>
 );

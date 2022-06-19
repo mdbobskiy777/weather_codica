@@ -1,32 +1,46 @@
-import { ReactElement } from 'react';
-
-import ListItem from '@mui/material/ListItem';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 
 import { CityInfo } from 'src/slices/cities';
 import { CityCard } from './CityCard';
+import { AddCityButton } from './AddCityButton';
 
-type CitiesListType = (props: {
+import { lastListItemStyle, listItemStyle, listStyle } from './styles';
+
+type CitiesListType = {
   citiesInfo: CityInfo[];
   onCardClick: (cityRedirectName: string) => () => void;
   onDeleteCity: (deleteCityName: string) => () => void;
   onUpdateCityInfo: (updateCityName: string) => () => void;
-}) => ReactElement;
+  toggleDialog: () => void;
+  refreshLoading: boolean;
+  updatingCity: string;
+};
 
-export const CitiesList: CitiesListType = ({
+export const CitiesList = ({
   citiesInfo,
   onUpdateCityInfo,
   onDeleteCity,
   onCardClick,
-}) => (
-  <List>
+  toggleDialog,
+  refreshLoading,
+  updatingCity,
+}: CitiesListType) => (
+  <List sx={listStyle}>
     {citiesInfo?.map((city) => (
-      <ListItem key={city.name}>
-        <CityCard city={city} onCardClick={onCardClick} />
-        <Button onClick={onDeleteCity(city.name)}>X</Button>
-        <Button onClick={onUpdateCityInfo(city.name)}>update</Button>
+      <ListItem key={city.name} sx={listItemStyle}>
+        <CityCard
+          city={city}
+          onCardClick={onCardClick}
+          onUpdateCityInfo={onUpdateCityInfo}
+          onDeleteCity={onDeleteCity}
+          refreshLoading={refreshLoading}
+          updatingCity={updatingCity}
+        />
       </ListItem>
     ))}
+    <ListItem sx={lastListItemStyle}>
+      <AddCityButton toggleDialog={toggleDialog} />
+    </ListItem>
   </List>
 );

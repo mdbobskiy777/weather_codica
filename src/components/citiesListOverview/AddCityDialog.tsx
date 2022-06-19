@@ -1,14 +1,19 @@
-import { ChangeEvent, ReactElement } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
+import Box from '@mui/material/Box';
 
-import { Error } from 'src/slices/cities';
+import { Error, setError, setStatus } from 'src/slices/cities';
+import { useDispatch } from 'src/store';
+import DeleteIcon from 'src/assets/images/icons/DeleteIcon';
 
-type AddCityDialogType = (props: {
+import { commonBoxStyle, deleteButtonBoxStyle, dialogStyle, textStyle } from './styles';
+
+type AddCityDialogType = {
   isOpen: boolean;
   toggleDialog: () => void;
   error: Error;
@@ -16,9 +21,9 @@ type AddCityDialogType = (props: {
   handleChangeCityName: (e: ChangeEvent<HTMLInputElement>) => void;
   onAddCity: () => void;
   status: string;
-}) => ReactElement;
+};
 
-export const AddCityDialog: AddCityDialogType = ({
+export const AddCityDialog = ({
   isOpen,
   toggleDialog,
   error,
@@ -26,19 +31,40 @@ export const AddCityDialog: AddCityDialogType = ({
   handleChangeCityName,
   onAddCity,
   status,
-}) => (
-  <Dialog open={isOpen} onClose={toggleDialog}>
-    <div>
-      {error && <Typography>{error.message}</Typography>}
-      {status === 'success' && <Typography>City added!</Typography>}
-      <IconButton onClick={toggleDialog}>x</IconButton>
-    </div>
-    <TextField
-      size="small"
-      placeholder="Enter city"
-      value={cityName}
-      onChange={handleChangeCityName}
-    />
-    <Button onClick={onAddCity}>Add city</Button>
-  </Dialog>
-);
+}: AddCityDialogType) => {
+  const dispatch = useDispatch();
+
+  const onFocusHandler = useCallback(() => {
+    dispatch(setStatus(''));
+    dispatch(setError(''));
+  }, [dispatch]);
+
+  return (
+    <Dialog open={isOpen} onClose={toggleDialog} sx={dialogStyle}>
+      <Box sx={deleteButtonBoxStyle}>
+        <IconButton onClick={toggleDialog}>
+          <DeleteIcon />
+        </IconButton>
+      </Box>
+      <Box sx={commonBoxStyle}>
+        <TextField
+          sx={{ width: '90%' }}
+          size="small"
+          placeholder="Enter city"
+          value={cityName}
+          onChange={handleChangeCityName}
+          onFocus={onFocusHandler}
+        />
+      </Box>
+      <Box sx={commonBoxStyle}>
+        <Button variant="outlined" onClick={onAddCity} sx={{ width: '60%' }}>
+          Add city
+        </Button>
+      </Box>
+      <Box sx={commonBoxStyle}>
+        {error && <Typography sx={textStyle}>{error.message}</Typography>}
+        {status === 'success' && <Typography sx={textStyle}>City added!</Typography>}
+      </Box>
+    </Dialog>
+  );
+};
