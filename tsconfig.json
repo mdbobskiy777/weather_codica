@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "es2015",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,15 +16,8 @@
     "jsx": "preserve",
     "noImplicitAny": true,
     "sourceMap": true,
-    "types": [
-      "jest"
-    ],
+    "types": ["jest"],
     "baseUrl": "./",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
     "incremental": true
   },
   "exclude": [
@@ -39,12 +28,7 @@
     "*.test.tsx",
     "*.spec.ts",
     "*.spec.tsx",
-    "coverage",
+    "coverage"
   ],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "./next-env.d.ts",
-    "./.eslintrc.js",
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "./next-env.d.ts", "./.eslintrc.js"]
 }

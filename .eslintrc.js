@@ -8,6 +8,12 @@ module.exports = {
     'plugin:react/recommended',
     'airbnb',
     'airbnb/hooks',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:jsx-a11y/recommended',
+    'plugin:prettier/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -17,11 +23,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-    'jest',
-  ],
+  plugins: ['react', '@typescript-eslint', 'jest'],
   rules: {
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
@@ -31,6 +33,8 @@ module.exports = {
     'react/function-component-definition': 'off',
     'react/prop-types': 'off',
     'react/jsx-one-expression-per-line': 'off',
+    'linebreak-style': 0,
+    'prettier/prettier': ['error', {}, { usePrettierrc: true }],
   },
   globals: {
     JSX: true,
