@@ -11,7 +11,7 @@ import { Error, setError, setStatus } from 'src/slices/cities';
 import { useDispatch } from 'src/store';
 import DeleteIcon from 'src/assets/images/icons/DeleteIcon';
 
-import { commonBoxStyle, deleteButtonBoxStyle, dialogStyle, textStyle } from './styles';
+import styles from './styles';
 
 type AddCityDialogType = {
   isOpen: boolean;
@@ -40,13 +40,18 @@ export const AddCityDialog = ({
   }, [dispatch]);
 
   return (
-    <Dialog open={isOpen} onClose={toggleDialog} sx={dialogStyle}>
-      <Box sx={deleteButtonBoxStyle}>
+    <Dialog
+      aria-label="test-dialog-btn"
+      open={isOpen}
+      onClose={toggleDialog}
+      sx={styles.dialogStyle}
+    >
+      <Box sx={styles.deleteButtonBoxStyle}>
         <IconButton onClick={toggleDialog}>
           <DeleteIcon />
         </IconButton>
       </Box>
-      <Box sx={commonBoxStyle}>
+      <Box sx={styles.commonBoxStyle}>
         <TextField
           sx={{ width: '90%' }}
           size="small"
@@ -56,14 +61,14 @@ export const AddCityDialog = ({
           onFocus={onFocusHandler}
         />
       </Box>
-      <Box sx={commonBoxStyle}>
+      <Box sx={styles.commonBoxStyle}>
         <Button variant="outlined" onClick={onAddCity} sx={{ width: '60%' }}>
           Add city
         </Button>
       </Box>
-      <Box sx={commonBoxStyle}>
-        {error && <Typography sx={textStyle}>{error.message}</Typography>}
-        {status === 'success' && <Typography sx={textStyle}>City added!</Typography>}
+      <Box sx={styles.commonBoxStyle}>
+        {error && <Typography sx={styles.textStyle}>{error.message}</Typography>}
+        {status === 'success' && <Typography sx={styles.textStyle}>City added!</Typography>}
       </Box>
     </Dialog>
   );

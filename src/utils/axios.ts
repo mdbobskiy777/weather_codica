@@ -12,7 +12,7 @@ const geocodingAPIInstance: AxiosInstance = axios.create({
   baseURL: 'https://api.openweathermap.org/geo/1.0/',
 });
 
-const wheatherAPIInstance: AxiosInstance = axios.create({
+const weatherAPIInstance: AxiosInstance = axios.create({
   baseURL: 'https://api.openweathermap.org/data/2.5/',
 });
 
@@ -21,7 +21,7 @@ geocodingAPIInstance.interceptors.response.use(
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
 );
 
-wheatherAPIInstance.interceptors.response.use(
+weatherAPIInstance.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
 );
@@ -30,7 +30,7 @@ export const getCoordinatesDataByCityName = async (cityName: string) =>
   geocodingAPIInstance.get<GeogeocodingResponse>(`/direct?q=${cityName}&appid=${apiKey}`);
 
 export const getWeatherDataByCoordinates = async (lat: number, lon: number, addParam = '') => {
-  return wheatherAPIInstance
+  return weatherAPIInstance
     .get<CityInfo>(
       `/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,daily,alerts&units=metric&appid=${apiKey}`.replace(
         addParam,

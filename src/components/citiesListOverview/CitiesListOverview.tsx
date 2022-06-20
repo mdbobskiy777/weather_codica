@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'src/store';
 import { deleteCity, addCity, setStatus, updateCity, setError } from 'src/slices/cities';
 import { AddCityDialog } from './AddCityDialog';
 import { CitiesList } from './CitiesList';
-import { cityListBoxStyle } from './styles';
+import styles from './styles';
 
 export const CitiesListOverview = () => {
   const [cityName, setCityName] = useState('');
@@ -85,7 +85,7 @@ export const CitiesListOverview = () => {
 
   return (
     <Box>
-      <Box sx={cityListBoxStyle}>
+      <Box sx={styles.cityListBoxStyle}>
         {citiesInfo && (
           <CitiesList
             citiesInfo={citiesInfo}
