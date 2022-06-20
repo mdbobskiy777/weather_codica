@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.js": "/weather_codica/static/js/main.781d1448.js",
+    "static/media/loading.gif": "/weather_codica/static/media/loading.a1a996746e5e48352c81.gif",
+    "index.html": "/weather_codica/index.html",
+    "main.781d1448.js.map": "/weather_codica/static/js/main.781d1448.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.781d1448.js"
+  ]
+}
