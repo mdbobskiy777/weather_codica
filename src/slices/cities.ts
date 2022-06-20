@@ -25,40 +25,34 @@ export type CityInfo = {
     visibility: number;
     wind_speed: number;
     wind_deg: number;
-    weather: [
-      {
-        id: number;
-        main: string;
-        description: string;
-        icon: string;
-      }
-    ];
+    weather: Array<{
+      id: number;
+      main: string;
+      description: string;
+      icon: string;
+    }>;
   };
-  hourly?: [
-    {
-      dt: number;
-      temp: number;
-      feels_like: number;
-      pressure: number;
-      humidity: number;
-      dew_point: number;
-      uvi: number;
-      clouds: number;
-      visibility: number;
-      wind_speed: number;
-      wind_deg: number;
-      wind_gust: number;
-      weather: [
-        {
-          id: number;
-          main: string;
-          description: string;
-          icon: string;
-        }
-      ];
-      pop: 0;
-    }
-  ];
+  hourly?: Array<{
+    dt: number;
+    temp: number;
+    feels_like: number;
+    pressure: number;
+    humidity: number;
+    dew_point: number;
+    uvi: number;
+    clouds: number;
+    visibility: number;
+    wind_speed: number;
+    wind_deg: number;
+    wind_gust: number;
+    weather: Array<{
+      id: number;
+      main: string;
+      description: string;
+      icon: string;
+    }>;
+    pop: number;
+  }>;
 };
 
 type CitiesListState = {

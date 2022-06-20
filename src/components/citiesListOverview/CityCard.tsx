@@ -9,17 +9,7 @@ import { WeatherImageBox } from 'src/common';
 import RefreshIcon from 'src/assets/images/icons/RefreshIcon';
 import DeleteIcon from 'src/assets/images/icons/DeleteIcon';
 import { showFormattedTemperature } from 'src/heplers';
-import {
-  cityCardBoxStyle,
-  cityCardMainBoxStyle,
-  cityTextStyle,
-  countryTextStyle,
-  infoBoxStyle,
-  loadingImgBoxStyle,
-  nameBoxStyle,
-  optionsBoxStyle,
-  weatherDescTextStyle,
-} from './styles';
+import styles from './styles';
 
 type CityCardType = {
   onCardClick: (cityRedirectName: string) => () => void;
@@ -38,14 +28,14 @@ export const CityCard = ({
   onDeleteCity,
   refreshLoading,
 }: CityCardType) => (
-  <Box sx={cityCardMainBoxStyle}>
+  <Box sx={styles.cityCardMainBoxStyle}>
     {refreshLoading || updatingCity === city.name ? (
-      <Box sx={loadingImgBoxStyle}>
+      <Box sx={styles.loadingImgBoxStyle}>
         <img src={loadingGif} alt="loading" width="64px" height="64px" />
       </Box>
     ) : (
-      <Box sx={cityCardBoxStyle}>
-        <Box sx={optionsBoxStyle}>
+      <Box sx={styles.cityCardBoxStyle}>
+        <Box sx={styles.optionsBoxStyle}>
           <IconButton onClick={onUpdateCityInfo(city.name)}>
             <RefreshIcon />
           </IconButton>
@@ -53,14 +43,18 @@ export const CityCard = ({
             <DeleteIcon />
           </IconButton>
         </Box>
-        <Box sx={infoBoxStyle} onClick={onCardClick(city.name)}>
-          <Box sx={nameBoxStyle}>
-            <Typography sx={cityTextStyle}>{city.name}</Typography>
-            <Typography sx={countryTextStyle}>{city.country}</Typography>
+        <Box sx={styles.infoBoxStyle} onClick={onCardClick(city.name)}>
+          <Box sx={styles.nameBoxStyle}>
+            <Typography aria-label="test-city-name" sx={styles.cityTextStyle}>
+              {city.name}
+            </Typography>
+            <Typography sx={styles.countryTextStyle}>{city.country}</Typography>
           </Box>
           <Typography>{showFormattedTemperature(city.current.temp)}℃</Typography>
           <WeatherImageBox icon={`${city.current.weather[0].icon}@2x`} />
-          <Typography sx={weatherDescTextStyle}>{city.current.weather[0].description}</Typography>
+          <Typography sx={styles.weatherDescTextStyle}>
+            {city.current.weather[0].description}
+          </Typography>
         </Box>
       </Box>
     )}

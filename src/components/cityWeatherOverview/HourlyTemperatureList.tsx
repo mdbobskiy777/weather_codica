@@ -5,7 +5,7 @@ import { CityInfo } from 'src/slices/cities';
 import { Loading } from 'src/common';
 import { TemperatureListItem } from './TemperatureListItem';
 
-import { listStyle } from './styles';
+import styles from './styles';
 
 type HourlyTemperatureListType = { currentCity: CityInfo; loading: boolean };
 
@@ -17,7 +17,7 @@ export const HourlyTemperatureList = ({ currentCity, loading }: HourlyTemperatur
       {loading ? (
         <Loading />
       ) : (
-        <List sx={listStyle}>
+        <List sx={styles.listStyle}>
           {currentCity.hourly
             ?.filter((hour) => isDayIsCurrent(hour.dt))
             .map((hour) => (

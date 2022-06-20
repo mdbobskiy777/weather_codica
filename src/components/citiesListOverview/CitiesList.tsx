@@ -5,7 +5,7 @@ import { CityInfo } from 'src/slices/cities';
 import { CityCard } from './CityCard';
 import { AddCityButton } from './AddCityButton';
 
-import { lastListItemStyle, listItemStyle, listStyle } from './styles';
+import styles from './styles';
 
 type CitiesListType = {
   citiesInfo: CityInfo[];
@@ -26,9 +26,9 @@ export const CitiesList = ({
   refreshLoading,
   updatingCity,
 }: CitiesListType) => (
-  <List sx={listStyle}>
+  <List sx={styles.listStyle}>
     {citiesInfo?.map((city) => (
-      <ListItem key={city.name} sx={listItemStyle}>
+      <ListItem key={city.name} sx={styles.listItemStyle}>
         <CityCard
           city={city}
           onCardClick={onCardClick}
@@ -39,7 +39,7 @@ export const CitiesList = ({
         />
       </ListItem>
     ))}
-    <ListItem sx={lastListItemStyle}>
+    <ListItem sx={styles.lastListItemStyle}>
       <AddCityButton toggleDialog={toggleDialog} />
     </ListItem>
   </List>
