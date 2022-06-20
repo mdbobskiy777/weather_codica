@@ -1,6 +1,8 @@
 {
   "name": "weather_codica",
   "homepage": "https://mdbobskiy777.github.io/weather_codica/",
+  "predeploy": "yarn run build",
+  "deploy": "gh-pages -d build",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
