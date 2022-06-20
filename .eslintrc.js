@@ -34,7 +34,7 @@ module.exports = {
     'react/prop-types': 'off',
     'react/jsx-one-expression-per-line': 'off',
     'linebreak-style': 0,
-    'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+    'prettier/prettier': ['error', { endOfLine: 'auto' }, { usePrettierrc: true }],
   },
   globals: {
     JSX: true,
