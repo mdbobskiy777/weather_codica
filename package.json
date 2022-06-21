@@ -1,6 +1,5 @@
 {
   "name": "weather_codica",
-  "homepage": "https://mdbobskiy777.github.io/weather_codica/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
